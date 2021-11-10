@@ -73,7 +73,7 @@ param
 	[string]$VpnName,
 	[string]$ServerAddress,
 	[string]$AuthenticationMethod = "EAP",
-	[string]$EncryptionLevel = "Optional",
+	[string]$EncryptionLevel = "Required",
 	[string]$TunnelType = "Automatic",
 	[System.Security.Cryptography.X509Certificates.X509Certificate2]$Certificate,
 	[string]$UserName,
@@ -149,14 +149,14 @@ if (-not $vpn)
 		Show-PSHelp
 	}
 	# Add VPN connection
-	Add-VpnConnection $VpnName -ServerAddress $ServerAddress -TunnelType $TunnelType -EncryptionLevel $EncryptationLevel -AuthenticationMethod $AuthenticationMethod -SplitTunneling -RememberCredential -ErrorAction Stop
+	Add-VpnConnection $VpnName -ServerAddress $ServerAddress -TunnelType $TunnelType -EncryptionLevel $EncryptionLevel -AuthenticationMethod $AuthenticationMethod -SplitTunneling -RememberCredential -ErrorAction Stop
 	$vpn = Get-VpnConnectionByVpnName
 }
 # Else, if server address was specified...
 elseif ($ServerAddress)
 {
 	# Update VPN connection
-	Set-VpnConnection $VpnName -ServerAddress $ServerAddress -TunnelType Ikev2 -EncryptionLevel Required -AuthenticationMethod Eap -SplitTunneling $true -RememberCredential $true -ErrorAction Stop -WarningAction SilentlyContinue
+	Set-VpnConnection $VpnName -ServerAddress $ServerAddress -TunnelType Ikev2 -EncryptionLevel $EncryptionLevel -AuthenticationMethod Eap -SplitTunneling $true -RememberCredential $true -ErrorAction Stop -WarningAction SilentlyContinue
 	$vpn = Get-VpnConnectionByVpnName
 }
 if (-not $vpn)
